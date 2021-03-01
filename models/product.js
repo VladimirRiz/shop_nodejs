@@ -17,6 +17,7 @@ module.exports = class Product {
   }
 
   save() {
+    this.id = Math.random().toString();
     getProductsFromTheFile((products) => {
       products.push(this);
       fs.writeFile(dataPath, JSON.stringify(products), (err) => {
