@@ -28,8 +28,15 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findById(prodId, (product) => {
-    console.log(product);
-    res.send(product.desc);
+    const { name, imageURL, desc, price } = product;
+    res.render('shop/product-details', {
+      pageTitle: `Product ${name}`,
+      title: name,
+      image: imageURL,
+      price,
+      desc,
+      path: false,
+    });
   });
 };
 
