@@ -5,15 +5,13 @@
     <%- include('../includes/nav.ejs') %>
     <main class="main">
         <section class="product">
-            <h1 class="product__title"><%= title %></h1>
+            <h1 class="product__title"><%= product.name %></h1>
             <div class="product__image-container">
-                <img class="product__image" src="<%= image%>" alt="<%= title %>">
+                <img class="product__image" src="<%= product.imageURL %>" alt="<%= product.name %>">
             </div>
-            <h2 class="product__price"><%= price %></h2>
-            <p class="product__description"><%= desc %></p>
-            <form action="/cart" method="POST">
-                <button class="btn" type="submit">Add To Cart</button>
-            </form>
+            <h2 class="product__price"><%= product.price %></h2>
+            <p class="product__description"><%= product.desc %></p>
+            <%- include('../includes/add-to-card.ejs') %>
         </section>
     </main>
 <%- include('../includes/end.ejs') %>
