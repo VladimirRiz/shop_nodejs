@@ -40,6 +40,18 @@ module.exports = class Product {
     });
   }
 
+  static deleteProduct(id) {
+    getProductsFromTheFile((products) => {
+      //   const productIndex = products.findIndex((product) => product.id === id);
+      //   const updatedProducts = [...products];
+      //   updatedProducts.splice(productIndex, 1);
+      const updatedProducts = products.filter((product) => product.id !== id);
+      fs.writeFile(dataPath, JSON.stringify(updatedProducts), (err) =>
+        console.log(err)
+      );
+    });
+  }
+
   static fetchAll(cb) {
     getProductsFromTheFile(cb);
   }
