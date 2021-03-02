@@ -11,18 +11,32 @@ const getProductsFromTheFile = (cb) => {
 };
 
 module.exports = class Product {
-  constructor(title, imageURL, desc, price) {
+  constructor(id, title, imageURL, desc, price) {
+    this.id = id;
     this.name = title;
-    (this.imageURL = imageURL), (this.desc = desc), (this.price = price);
+    this.imageURL = imageURL;
+    this.desc = desc;
+    this.price = price;
   }
 
   save() {
-    this.id = Math.random().toString();
     getProductsFromTheFile((products) => {
-      products.push(this);
-      fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
+      if (this.id) {
+        const productIndex = products.findIndex(
+          (product) => product.id === this.id
+        );
+        const updatedProducts = [...products];
+        updatedProducts[productIndex] = this;
+        fs.writeFile(dataPath, JSON.stringify(updatedProducts), (err) =>
+          console.log(err)
+        );
+      } else {
+        this.id = Math.random().toString();
+        products.push(this);
+        fs.writeFile(dataPath, JSON.stringify(products), (err) => {
+          console.log(err);
+        });
+      }
     });
   }
 
