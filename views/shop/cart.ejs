@@ -13,18 +13,18 @@
                         <%= p.product.name %>
                         </h1>
                     </header>
-                    <div class="card__image">
-                        <img src="<%=p.product.imageURL%>"
-                            alt="Book">
-                    </div>
+                    
                     <div class="card__content">
                         <h2 class="product__price">
-                            <%= p.product.price %>$
+                            (<%= p.prodQty %>)
                         </h2>
-                        <p class="product__description"><%= p.product.desc %></p>
                     </div>
-
-            (<%= p.prodQty %>)
+                    <div class="card__actions">
+                    <form action="/cart-delete-item" method="POST">
+                        <input type="hidden" name="id" value="<%= p.product.id%>">
+                        <button type="submit" class="btn">Delete</button>
+                    </form>
+                    </div>
                     
                 </article>
             <%} ) %>
