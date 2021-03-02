@@ -13,7 +13,29 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  res.render('shop/cart', { pageTitle: 'Card', path: '/card' });
+  Cart.getCart((cart) => {
+    Product.fetchAll((products) => {
+      const cartProducts = [];
+      if (cart) {
+        for (product of products) {
+          const cartProductsData = cart.products.find(
+            (prod) => prod.id === product.id
+          );
+          if (cartProductsData) {
+            cartProducts.push({
+              product: product,
+              prodQty: cartProductsData.qty,
+            });
+          }
+        }
+      }
+      res.render('shop/cart', {
+        pageTitle: 'Cart',
+        path: '/cart',
+        products: cartProducts,
+      });
+    });
+  });
 };
 
 exports.postCart = (req, res, next) => {
