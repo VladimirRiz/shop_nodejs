@@ -1,34 +1,35 @@
-const root = require('../util/path');
 const path = require('path');
+const rootDir = require('../util/path');
 const fs = require('fs');
 
-const dataPath = path.join(root, 'data', 'cart.json');
+const dataPath = path.join(rootDir, 'data', 'cart.json');
 
 module.exports = class Cart {
-  static addToCard(id, productPrice) {
-    console.log(id);
-    let cart = { product: [], totalPrice: 0 };
+  static addToCart(id, price) {
     fs.readFile(dataPath, (err, content) => {
+      let cart = { products: [], totalPrice: 0 };
+
       if (!err) {
         cart = JSON.parse(content);
       }
-
-      const existingIndex = cart.product.findIndex((prod) => prod.id === id);
-      const existingProduct = cart.product[existingIndex];
+      const existingProductIndex = cart.products.findIndex(
+        (product) => product.id === id
+      );
+      console.log(existingProductIndex, 'index');
+      const existingProduct = cart.products[existingProductIndex];
       let updatedProduct;
+
       if (existingProduct) {
         updatedProduct = { ...existingProduct };
         updatedProduct.qty = updatedProduct.qty + 1;
-        cart.product = [...cart.product];
-        cart.product[existingIndex] = updatedProduct;
+        console.log(updatedProduct, 'here');
+        cart.products[existingProductIndex] = updatedProduct;
       } else {
         updatedProduct = { id: id, qty: 1 };
-        cart.product = [...cart.product, updatedProduct];
+        cart.products = [...cart.products, updatedProduct];
       }
-      cart.totalPrice = cart.totalPrice + +productPrice;
-      fs.writeFile(dataPath, JSON.stringify(cart), (err) => {
-        console.log(err);
-      });
+      cart.totalPrice = cart.totalPrice + +price;
+      fs.writeFile(dataPath, JSON.stringify(cart), (err) => console.log(err));
     });
   }
 };
