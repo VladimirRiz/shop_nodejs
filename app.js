@@ -10,7 +10,11 @@ const controllerError = require('./controllers/error');
 
 const app = express();
 
-db.execute('');
+db.execute('SELECT * FROM products')
+  .then((res) => {
+    console.log(res[0]);
+  })
+  .catch((err) => console.log(err));
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
