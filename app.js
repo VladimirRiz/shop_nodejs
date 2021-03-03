@@ -4,10 +4,13 @@ const bodyParser = require('body-parser');
 const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
 
+const db = require('./util/database');
+
 const controllerError = require('./controllers/error');
-const router = require('./routes/admin');
 
 const app = express();
+
+db.execute('');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
