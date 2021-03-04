@@ -3,8 +3,8 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll().then(([products, fieldData]) => {
-    console.log(fieldData);
+  Product.findAll().then((products) => {
+    console.log(products);
     res.render('shop/index', {
       pageTitle: 'Shop',
       path: '/',
@@ -56,7 +56,7 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll().then(([products, fieldData]) => {
+  Product.findAll().then((products) => {
     res.render('shop/product-list', {
       pageTitle: 'Products',
       path: '/products',
