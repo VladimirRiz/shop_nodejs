@@ -7,11 +7,11 @@
             <form class="product-form" action="/admin/<% if(editing){ %>edit-product<% } else {%>add-product<% } %>" method="POST">
                 <div class="form-control">
                     <label for="name">Name</label>
-                    <input class="form-control__input" type="text" name="name" id="name" value="<% if(editing){ %><%= product.name %><% } %>"/>
+                    <input class="form-control__input" type="text" name="title" id="name" value="<% if(editing){ %><%= product.title %><% } %>"/>
                 </div>
                 <div class="form-control">
                     <label for="imageURL">Image</label>
-                    <input class="form-control__input" type="text" name="imageURL" id="imageURL" value="<% if(editing){ %><%= product.imageURL %><% } %>"/>
+                    <input class="form-control__input" type="text" name="imageUrl" id="imageURL" value="<% if(editing){ %><%= product.imageUrl %><% } %>"/>
                 </div>
                 <div class="form-control">
                     <label for="price">Price</label>
