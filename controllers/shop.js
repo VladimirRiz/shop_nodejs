@@ -70,8 +70,8 @@ exports.getProduct = (req, res, next) => {
   Product.findById(prodId)
     .then(([product]) => {
       res.render('shop/product-details', {
-        pageTitle: `Product ${product.name}`,
-        product: product,
+        pageTitle: `Product ${product[0].title}`,
+        product: product[0],
         path: false,
       });
     })
