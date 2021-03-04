@@ -4,7 +4,6 @@ const Cart = require('../models/cart');
 
 exports.getIndex = (req, res, next) => {
   Product.findAll().then((products) => {
-    console.log(products);
     res.render('shop/index', {
       pageTitle: 'Shop',
       path: '/',
@@ -67,11 +66,11 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then((product) => {
       res.render('shop/product-details', {
-        pageTitle: `Product ${product[0].title}`,
-        product: product[0],
+        pageTitle: `Product ${product.title}`,
+        product: product,
         path: false,
       });
     })
