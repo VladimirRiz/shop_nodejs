@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
 
-// const db = require('./util/database');
+const sequelize = require('./util/database');
 
 const controllerError = require('./controllers/error');
 
@@ -27,4 +27,10 @@ app.use(routerShop);
 
 app.use(controllerError.get404);
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then((res) => {
+    console.log(res);
+    app.listen(3000);
+  })
+  .catch((err) => console.log(err));
