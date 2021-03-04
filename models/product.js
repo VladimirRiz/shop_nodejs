@@ -3,13 +3,18 @@ const db = require('../util/database');
 module.exports = class Product {
   constructor(id, title, imageURL, desc, price) {
     this.id = id;
-    this.name = title;
+    this.title = title;
     this.imageURL = imageURL;
     this.desc = desc;
     this.price = price;
   }
 
-  save() {}
+  save() {
+    return db.execute(
+      'INSERT INTO products (`title`, `price`, `desc`, `imageURL`) VALUES (?, ?, ?, ?)',
+      [this.title, this.price, this.desc, this.imageURL]
+    );
+  }
 
   static deleteProduct(id) {}
 
