@@ -4,17 +4,17 @@ const bodyParser = require('body-parser');
 const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
 
-const db = require('./util/database');
+// const db = require('./util/database');
 
 const controllerError = require('./controllers/error');
 
 const app = express();
 
-db.execute('SELECT * FROM products')
-  .then((res) => {
-    console.log(res[0]);
-  })
-  .catch((err) => console.log(err));
+// db.execute('SELECT * FROM products')
+//   .then((res) => {
+//     console.log(res[0]);
+//   })
+//   .catch((err) => console.log(err));
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
