@@ -28,8 +28,11 @@ exports.getEditProduct = (req, res, next) => {
   const isEditing = req.query.edit;
   if (!isEditing) res.redirect('/');
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    .then((product) => {
+  req.user
+    .getProducts({ where: { id: prodId } })
+    // Product.findByPk(prodId)
+    .then(([product]) => {
+      console.log(product);
       res.render('admin/edit-product', {
         pageTitle: 'Edit Product',
         path: '/edit-product',
@@ -69,11 +72,14 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then((products) => {
-    res.render('admin/product-list', {
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-      prods: products,
-    });
-  });
+  req.user
+    .getProducts()
+    .then((products) => {
+      res.render('admin/product-list', {
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+        prods: products,
+      });
+    })
+    .catch((err) => console.log(err));
 };
