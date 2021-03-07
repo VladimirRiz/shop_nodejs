@@ -75,10 +75,6 @@ exports.postDeleteProduct = (req, res, next) => {
       res.redirect('/cart');
     })
     .catch((err) => console.log(err));
-  // Product.findById(id, (product) => {
-  //   Cart.deleteCart(id, product.price);
-  //   res.redirect('/cart');
-  // });
 };
 
 exports.getProducts = (req, res, next) => {
