@@ -63,10 +63,22 @@ exports.postCart = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const { id } = req.body;
-  Product.findById(id, (product) => {
-    Cart.deleteCart(id, product.price);
-    res.redirect('/cart');
-  });
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts({ where: { id: id } });
+    })
+    .then(([product]) => {
+      return product.cartItem.destroy();
+    })
+    .then((result) => {
+      res.redirect('/cart');
+    })
+    .catch((err) => console.log(err));
+  // Product.findById(id, (product) => {
+  //   Cart.deleteCart(id, product.price);
+  //   res.redirect('/cart');
+  // });
 };
 
 exports.getProducts = (req, res, next) => {
