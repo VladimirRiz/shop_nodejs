@@ -31,11 +31,34 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  const prodId = req.body.id;
-  Product.findById(prodId, (product) => {
-    Cart.addToCart(product.id, product.price);
-  });
-  res.redirect('/cart');
+  const { id } = req.body;
+  let fetchCart;
+  req.user
+    .getCart()
+    .then((cart) => {
+      fetchCart = cart;
+      return cart.getProducts({ where: { id: id } });
+    })
+    .then((products) => {
+      let product;
+      if (products.length > 0) {
+        product = products[0];
+      }
+      let newQuantity = 1;
+      if (product) {
+        /******/
+      }
+      return Product.findByPk(id)
+        .then((product) => {
+          console.log(product);
+          return fetchCart.addProduct(product, {
+            through: { quantity: newQuantity },
+          });
+        })
+        .catch((err) => console.log(err));
+    })
+    .then(() => res.redirect('/cart'))
+    .catch((err) => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {

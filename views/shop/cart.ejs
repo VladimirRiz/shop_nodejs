@@ -10,18 +10,18 @@
                 <article class="card product-item">
                     <header class="card__header">
                         <h1 class="product__title">
-                        <%= p.product.name %>
+                        <%= p.name %>
                         </h1>
                     </header>
                     
                     <div class="card__content">
                         <h2 class="product__price">
-                            (<%= p.prodQty %>)
+                            (<%= p.cartItem.quantity %>)
                         </h2>
                     </div>
                     <div class="card__actions">
                     <form action="/cart-delete-item" method="POST">
-                        <input type="hidden" name="id" value="<%= p.product.id%>">
+                        <input type="hidden" name="id" value="<%= p.id%>">
                         <button type="submit" class="btn">Delete</button>
                     </form>
                     </div>
