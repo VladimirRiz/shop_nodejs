@@ -82,6 +82,13 @@
   margin: 0 0.25rem;
 }
 
+.center {
+  margin: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .btn {
   padding: 0.5rem 1rem;
   font: inherit;

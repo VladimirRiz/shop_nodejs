@@ -7,27 +7,34 @@
         <% if (products.length > 0) {%>
             <div class="grid">
             <% products.forEach(p => { %>
-                <article class="card cart product-item">
-                    <header class="card__header">
-                        <h1 class="product__title">
-                        <%= p.title %>
-                        </h1>
-                    </header>
-                    
-                    <div class="card__content">
-                        <h2 class="product__price">
-                            (<%= p.cartItem.quantity %>)
-                        </h2>
+                <ul class="card  product-item">
+                    <li class="cart__list"> 
+                        <header class="card__header">
+                            <h1 class="product__title">
+                            <%= p.title %>
+                            </h1>
+                        </header>
+                        
+                        <div class="card__content">
+                            <h2 class="product__price">
+                                (<%= p.cartItem.quantity %>)
+                            </h2>
+                        </div>
+                        <div class="card__actions">
+                        <form action="/cart-delete-item" method="POST">
+                            <input type="hidden" name="id" value="<%= p.id%>">
+                            <button type="submit" class="btn">Delete</button>
+                        </form>
+                    </li>
                     </div>
-                    <div class="card__actions">
-                    <form action="/cart-delete-item" method="POST">
-                        <input type="hidden" name="id" value="<%= p.id%>">
-                        <button type="submit" class="btn">Delete</button>
-                    </form>
-                    </div>
                     
-                </article>
+                </ul>
             <%} ) %>
+                <div class="center">
+                    <form action="/create-order" method="POST">
+                        <button type="submit" class="btn">Order Now!</button>
+                    </form>
+                </div>
         </div>
             <% } else { %>
                <h1>Empty Cart</h1> 

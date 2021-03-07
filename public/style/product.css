@@ -19,9 +19,11 @@
   justify-content: space-between;
 }
 
-.cart {
+.cart__list {
+  display: flex;
   align-items: center;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .product__image-container {
