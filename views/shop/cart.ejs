@@ -5,9 +5,9 @@
     <%- include('../includes/nav.ejs') %>
     <main class="main">
         <% if (products.length > 0) {%>
-            <div class="grid">
-            <% products.forEach(p => { %>
+            <div class="grid grid__cart">
                 <ul class="card  product-item">
+            <% products.forEach(p => { %>
                     <li class="cart__list"> 
                         <header class="card__header">
                             <h1 class="product__title">
@@ -25,11 +25,10 @@
                             <input type="hidden" name="id" value="<%= p.id%>">
                             <button type="submit" class="btn">Delete</button>
                         </form>
-                    </li>
-                    </div>
-                    
+                        </div>
+                    </li>        
+                    <%} ) %>
                 </ul>
-            <%} ) %>
                 <div class="center">
                     <form action="/create-order" method="POST">
                         <button type="submit" class="btn">Order Now!</button>
