@@ -43,10 +43,14 @@ app.use(controllerError.get404);
 
 Product.belongsTo(User, { constrains: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 sequelize
-  // .sync({ force: true })
-  .sync()
+  .sync({ force: true })
+  // .sync()
   .then((res) => {
     return User.findByPk(1);
     // console.log(res);
