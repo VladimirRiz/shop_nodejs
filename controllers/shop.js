@@ -13,29 +13,21 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
-      const cartProducts = [];
-      if (cart) {
-        for (product of products) {
-          const cartProductsData = cart.products.find(
-            (prod) => prod.id === product.id
-          );
-          if (cartProductsData) {
-            cartProducts.push({
-              product: product,
-              prodQty: cartProductsData.qty,
-            });
-          }
-        }
-      }
-      res.render('shop/cart', {
-        pageTitle: 'Cart',
-        path: '/cart',
-        products: cartProducts,
-      });
-    });
-  });
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart
+        .getProducts()
+        .then((product) => {
+          res.render('shop/cart', {
+            pageTitle: 'Cart',
+            path: '/cart',
+            products: product,
+          });
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postCart = (req, res, next) => {
