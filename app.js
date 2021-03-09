@@ -1,8 +1,12 @@
 const path = require('path');
 const express = require('express');
+
 const bodyParser = require('body-parser');
-const routerData = require('./routes/admin');
-const routerShop = require('./routes/shop');
+
+// const routerData = require('./routes/admin');
+// const routerShop = require('./routes/shop');
+
+const mongoConnect = require('./util/database');
 
 const controllerError = require('./controllers/error');
 
@@ -23,7 +27,12 @@ app.use((req, res, next) => {
   //   .catch((err) => console.log(err));
 });
 
-app.use('/admin', routerData);
-app.use(routerShop);
+// app.use('/admin', routerData);
+// app.use(routerShop);
 
-app.use(controllerError.get404);
+// app.use(controllerError.get404);
+
+mongoConnect((client) => {
+  console.log(client);
+  app.listen(3000);
+});
