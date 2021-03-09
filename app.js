@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 // const routerData = require('./routes/admin');
 // const routerShop = require('./routes/shop');
 
-const mongoConnect = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 const controllerError = require('./controllers/error');
 
@@ -32,7 +32,6 @@ app.use((req, res, next) => {
 
 // app.use(controllerError.get404);
 
-mongoConnect((client) => {
-  console.log(client);
+mongoConnect(() => {
   app.listen(3000);
 });

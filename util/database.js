@@ -1,16 +1,24 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-const mongoConnect = (callback) => {
+let _db;
+
+const mongoConnect = () => {
   MongoClient.connect(
-    'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop?retryWrites=true&w=majority',
     { useUnifiedTopology: true }
   )
-    .then((result) => {
+    .then((client) => {
       console.log('Connected');
-      callback(result);
+      _db = client.db();
     })
     .catch((err) => console.log(err));
 };
 
-module.exports = mongoConnect;
+const getDb = () => {
+  if (_db) return _db;
+  throw 'No database found';
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
