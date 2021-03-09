@@ -3,7 +3,7 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
-// const routerData = require('./routes/admin');
+const routerData = require('./routes/admin');
 // const routerShop = require('./routes/shop');
 
 const mongoConnect = require('./util/database').mongoConnect;
@@ -25,13 +25,14 @@ app.use((req, res, next) => {
   //     next();
   //   })
   //   .catch((err) => console.log(err));
+  next();
 });
 
-// app.use('/admin', routerData);
+app.use('/admin', routerData);
 // app.use(routerShop);
 
-// app.use(controllerError.get404);
+app.use(controllerError.get404);
 
 mongoConnect(() => {
-  app.listen(3000);
+  app.listen(3033);
 });

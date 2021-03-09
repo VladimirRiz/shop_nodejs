@@ -10,7 +10,8 @@ class Product {
 
   save() {
     const db = getDb();
-    db.collection
+    return db
+      .collection('products')
       .insertOne(this)
       .then((result) => {
         console.log(result);
@@ -18,30 +19,5 @@ class Product {
       .catch((err) => console.log(err));
   }
 }
-
-const Product = sequelize.define('product', {
-  id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  desc: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
 
 module.exports = Product;
