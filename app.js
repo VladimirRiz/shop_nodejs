@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const routerData = require('./routes/admin');
-// const routerShop = require('./routes/shop');
+const routerShop = require('./routes/shop');
 
 const mongoConnect = require('./util/database').mongoConnect;
 
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/admin', routerData);
-// app.use(routerShop);
+app.use(routerShop);
 
 app.use(controllerError.get404);
 
