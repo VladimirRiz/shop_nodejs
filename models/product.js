@@ -8,7 +8,15 @@ class Product {
     this.price = price;
   }
 
-  save() {}
+  save() {
+    const db = getDb();
+    db.collection
+      .insertOne(this)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => console.log(err));
+  }
 }
 
 const Product = sequelize.define('product', {
