@@ -1,6 +1,5 @@
 const { findById } = require('../models/product');
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 exports.getIndex = (req, res, next) => {
   Product.fetchAll().then((products) => {
