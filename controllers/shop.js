@@ -11,23 +11,18 @@ exports.getIndex = (req, res, next) => {
   });
 };
 
-// exports.getCart = (req, res, next) => {
-//   req.user
-//     .getCart()
-//     .then((cart) => {
-//       return cart
-//         .getProducts()
-//         .then((product) => {
-//           res.render('shop/cart', {
-//             pageTitle: 'Cart',
-//             path: '/cart',
-//             products: product,
-//           });
-//         })
-//         .catch((err) => console.log(err));
-//     })
-//     .catch((err) => console.log(err));
-// };
+exports.getCart = (req, res, next) => {
+  req.user
+    .getCart()
+    .then((products) => {
+      res.render('shop/cart', {
+        pageTitle: 'Cart',
+        path: '/cart',
+        products: products,
+      });
+    })
+    .catch((err) => console.log(err));
+};
 
 exports.postCart = (req, res, next) => {
   const { id } = req.body;
