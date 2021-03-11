@@ -17,15 +17,30 @@ class User {
   }
 
   addToCard(product) {
+    let productIndex;
+    if (this.cart) {
+      productIndex = this.cart.items.findIndex((cp) => {
+        return cp.productId.toString() === product._id.toString();
+      });
+    } else productIndex = -1;
+    const updatedCartItems = this.cart ? [...this.cart.items] : [];
+    let newQuantity = 1;
+    if (productIndex >= 0) {
+      newQuantity = this.cart.items[productIndex].quantity + 1;
+      updatedCartItems[productIndex].quantity = newQuantity;
+    } else {
+      updatedCartItems.push({
+        productId: new ObjectId(product._id),
+        quantity: newQuantity,
+      });
+    }
+    const updatedCart = { items: updatedCartItems };
     const db = getDb();
-    const UpdatedProduct = {
-      items: [{ productId: new ObjectId(product._id), quantity: 1 }],
-    };
     return db
       .collection('users')
       .updateOne(
         { _id: new ObjectId(this._id) },
-        { $set: (this.cart = UpdatedProduct) }
+        { $set: { cart: updatedCart } }
       );
   }
 
