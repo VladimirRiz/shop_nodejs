@@ -7,6 +7,7 @@ const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
 
 const mongoConnect = require('./util/database').mongoConnect;
+const mongoose = require('mongoose');
 
 const User = require('./models/user');
 
@@ -34,6 +35,11 @@ app.use(routerShop);
 
 app.use(controllerError.get404);
 
-mongoConnect(() => {
-  app.listen(3033);
-});
+mongoose
+  .connect(
+    'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop?retryWrites=true&w=majority'
+  )
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch((err) => console.log(err));
