@@ -8,7 +8,7 @@ class User {
     this.name = username;
     this.email = email;
     this.cart = cart;
-    this._id = new ObjectId(id);
+    this._id = id;
   }
 
   save() {
@@ -18,10 +18,15 @@ class User {
 
   addToCard(product) {
     const db = getDb();
-    const UpdatedProduct = { items: [{ ...product, quantity: 1 }] };
+    const UpdatedProduct = {
+      items: [{ productId: new ObjectId(product._id), quantity: 1 }],
+    };
     return db
       .collection('users')
-      .insertOne({ _id: this._id }, { $set: (this.cart = UpdatedProduct) });
+      .updateOne(
+        { _id: new ObjectId(this._id) },
+        { $set: (this.cart = UpdatedProduct) }
+      );
   }
 
   static findById(userId) {
