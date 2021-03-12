@@ -13,8 +13,8 @@ router.get('/products', controllerAdmin.getProducts);
 
 router.get('/edit-product/:productId', controllerAdmin.getEditProduct);
 
-// router.post('/edit-product', controllerAdmin.postEditProduct);
+router.post('/edit-product', controllerAdmin.postEditProduct);
 
-// router.post('/delete', controllerAdmin.postDeleteProduct);
+router.post('/delete', controllerAdmin.postDeleteProduct);
 
 module.exports = router;
