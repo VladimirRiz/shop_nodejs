@@ -9,7 +9,7 @@ const routerShop = require('./routes/shop');
 // const mongoConnect = require('./util/database').mongoConnect;
 const mongoose = require('mongoose');
 
-// const User = require('./models/user');
+const User = require('./models/user');
 
 const controllerError = require('./controllers/error');
 
@@ -21,14 +21,14 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//   User.findById('6049309f05cf34a8050fd093')
-//     .then((user) => {
-//       req.user = new User(user.name, user.email, user.cart, user._id);
-//       next();
-//     })
-//     .catch((err) => console.log(err));
-// });
+app.use((req, res, next) => {
+  User.findById('604ba8970ab4c021685ea23a')
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
 
 app.use('/admin', routerData);
 app.use(routerShop);
@@ -41,6 +41,18 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
-    app.listen(3000);
+    User.findOne().then((user) => {
+      if (!user) {
+        const user = new User({
+          name: 'Riz',
+          email: 'test@email.com',
+          cart: {
+            items: [],
+          },
+        });
+        user.save();
+      }
+      app.listen(3000);
+    });
   })
   .catch((err) => console.log(err));
