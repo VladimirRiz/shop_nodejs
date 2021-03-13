@@ -23,6 +23,7 @@
 
 .main-header__item-list {
   display: flex;
+  align-items: center;
   list-style: none;
 }
 
