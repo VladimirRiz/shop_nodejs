@@ -1,27 +1,32 @@
 const path = require('path');
 const express = require('express');
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
 const routerAuth = require('./routes/auth');
 
-// const mongoConnect = require('./util/database').mongoConnect;
 const mongoose = require('mongoose');
+
+const session = require('express-session');
 
 const User = require('./models/user');
 
 const controllerError = require('./controllers/error');
-const router = require('./routes/shop');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({ secret: 'my secret', resave: false, saveUninitialized: false })
+);
 
 app.use((req, res, next) => {
   User.findById('604ba8970ab4c021685ea23a')
