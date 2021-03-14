@@ -1,39 +1,23 @@
-.product-form {
-  width: 20rem;
-  max-width: 90%;
-  margin: auto;
-}
-
 .form-control {
   margin: 1rem 0;
 }
 
 .form-control label,
-.form-control .form-control__input,
+.form-control input,
 .form-control textarea {
-  width: 100%;
   display: block;
+  width: 100%;
+  margin-bottom: 0.25rem;
 }
 
-.form-control__input {
-  padding: 0.5rem;
-  margin-top: 0.2rem;
-  border: 1px solid rgb(107, 150, 78);
+.form-control input,
+.form-control textarea {
+  border: 1px solid #a1a1a1;
   font: inherit;
   border-radius: 2px;
 }
 
-.product-form__submit {
-  padding: 0.5rem 1rem;
-  border: 1px solid rgb(107, 150, 78);
-  border-radius: 5px;
-  background-color: #fff;
-  color: rgb(107, 150, 78);
-  cursor: pointer;
-  font: inherit;
-}
-.product-form__submit:hover,
-.product-form__submit:active {
-  background-color: rgb(27, 75, 97);
-  color: #fff;
+.form-control input:focus,
+.form-control textarea:focus {
+  outline-color: #00695c;
 }
