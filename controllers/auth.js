@@ -33,3 +33,20 @@ exports.getSignUp = (req, res, next) => {
     isAuth: req.session.isLogin,
   });
 };
+
+exports.postSignUp = (req, res, next) => {
+  const { email, password } = req.body;
+  res.redirect('/');
+  User.findOne({ email: email })
+    .then((userDoc) => {
+      if (userDoc) {
+        return res.redirect('/signup');
+      }
+      const user = new User({ email, password, cart: { items: [] } });
+      return user.save();
+    })
+    .then(() => {
+      res.redirect('/login');
+    })
+    .catch((err) => console.log(err));
+};

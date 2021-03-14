@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const routerData = require('./routes/admin');
 const routerShop = require('./routes/shop');
@@ -29,8 +29,8 @@ const store = new MongoDBStore({
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
@@ -63,18 +63,6 @@ app.use(controllerError.get404);
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: 'Riz',
-          email: 'test@email.com',
-          cart: {
-            items: [],
-          },
-        });
-        user.save();
-      }
-      app.listen(3000);
-    });
+    app.listen(3000);
   })
   .catch((err) => console.log(err));

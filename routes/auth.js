@@ -6,10 +6,12 @@ const router = express.Router();
 
 router.get('/login', controllerAuth.getLogin);
 
+router.get('/signup', controllerAuth.getSignUp);
+
 router.post('/login', controllerAuth.postLogin);
 
-router.post('/logout', controllerAuth.postLogout);
+router.post('/signup', controllerAuth.postSignUp);
 
-router.get('/signup', controllerAuth.getSignUp);
+router.post('/logout', controllerAuth.postLogout);
 
 module.exports = router;
