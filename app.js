@@ -1,6 +1,9 @@
 const path = require('path');
 const express = require('express');
 
+const csrf = require('csurf');
+const csrfProtection = csrf();
+
 const bodyParser = require('body-parser');
 
 const routerData = require('./routes/admin');
@@ -52,6 +55,13 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => console.log(err));
+});
+
+app.use(csrfProtection);
+app.use((req, res, next) => {
+  res.locals.isAuth = req.session.isLogin;
+  res.locals.csrfToken = req.csrfToken();
+  next();
 });
 
 app.use('/admin', routerData);

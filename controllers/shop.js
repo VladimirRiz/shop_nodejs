@@ -32,7 +32,6 @@ exports.getProduct = (req, res, next) => {
         pageTitle: `Product ${product.title}`,
         product: product,
         path: false,
-        isAuth: req.session.isLogin,
       });
     })
     .catch((err) => console.log(err));
@@ -51,7 +50,6 @@ exports.getCart = (req, res, next) => {
         pageTitle: 'Cart',
         path: '/cart',
         products: products,
-        isAuth: req.session.isLogin,
       });
     })
     .catch((err) => console.log(err));
@@ -89,7 +87,6 @@ exports.getOrders = (req, res, next) => {
         pageTitle: 'Orders',
         path: '/orders',
         orders: orders,
-        isAuth: req.session.isLogin,
       });
     })
     .catch((err) => console.log(err));

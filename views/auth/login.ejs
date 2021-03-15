@@ -12,8 +12,9 @@
                 </div>
                 <div class="form-control">
                     <label for="password">Password</label>
-                    <input class="form-control__input" type="password" name="password" id="password"/>
+                    <input class="form-control__input" type="password" name="password" id="password" autocomplete="on"/>
                 </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
                 <button class="btn" type="submit">Login</button>
             </form>
         </main>
