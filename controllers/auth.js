@@ -11,13 +11,25 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('604ba8970ab4c021685ea23a')
+  const { email, password } = req.body;
+  User.findOne({ email })
     .then((user) => {
-      req.session.user = user;
-      req.session.isLogin = true;
-      req.session.save(() => {
-        res.redirect('/');
-      });
+      if (!user) {
+        return res.redirect('/login');
+      }
+      return bcrypt
+        .compare(password, user.password)
+        .then((doMatch) => {
+          if (doMatch) {
+            req.session.user = user;
+            req.session.isLogin = true;
+            return req.session.save((err) => {
+              res.redirect('/');
+            });
+          }
+          res.redirect('login');
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 };
@@ -43,18 +55,20 @@ exports.postSignUp = (req, res, next) => {
       if (userDoc) {
         return res.redirect('/signup');
       }
-      return bcrypt.hash(password, 12);
+      return bcrypt
+        .hash(password, 12)
+        .then((hashPassword) => {
+          const user = new User({
+            email,
+            password: hashPassword,
+            cart: { items: [] },
+          });
+          return user.save();
+        })
+        .then(() => {
+          res.redirect('/login');
+        });
     })
-    .then((hashPassword) => {
-      const user = new User({
-        email,
-        password: hashPassword,
-        cart: { items: [] },
-      });
-      return user.save();
-    })
-    .then(() => {
-      res.redirect('/login');
-    })
+
     .catch((err) => console.log(err));
 };
