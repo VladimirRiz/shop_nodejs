@@ -4,7 +4,7 @@
 <body>
     <%- include('../includes/nav.ejs') %>
         <main class="main">
-            <form class="product-form" action="/admin/<% if(editing){ %>edit-product<% } else {%>add-product<% } %>" method="POST">
+            <form class="product-form" action="/admin/<% if(editing){ %>edit-product <% } else { %>add-product <% } %>" method="POST">
                 <div class="form-control">
                     <label for="name">Name</label>
                     <input class="form-control__input" type="text" name="title" id="name" value="<% if(editing){ %><%= product.title %><% } %>"/>
@@ -19,12 +19,12 @@
                 </div>
                 <div class="form-control">
                     <label for="desc">Description</label>
-                    <textarea class="form-control__input" type="text" name="desc" id="desc" rows="5" ><%if(editing){ %><%= product.desc %><% } %></textarea>
+                    <textarea class="form-control__input" type="text" name="desc" id="desc" rows="5" ><%if(editing){ %><%= product.description %><% } %></textarea>
                 </div>
                 <% if(editing){ %>
                 <input type="hidden" name="id" value="<%= product._id %>"/>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
                 <button class="product-form__submit btn" type="submit"><% if(editing){ %> Update Product <% } else {%> Add Product <% } %> </button>
             </form>
         </main>
