@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 
 const controllerAuth = require('../controllers/auth');
 
@@ -18,7 +18,20 @@ router.post('/login', controllerAuth.postLogin);
 
 router.post(
   '/signup',
-  check('email').isEmail().withMessage('Please enter a valid email'),
+  [
+    check('email')
+      .isEmail()
+      .withMessage('Please enter a valid email')
+      .custom((value, req) => {
+        if (value === 'test@test.com') {
+          throw new Error('This email is forbidden');
+        }
+        return true;
+      }),
+    body('password', 'Enter a password at least with 5 characters ').isLength({
+      min: 5,
+    }),
+  ],
   controllerAuth.postSignUp
 );
 
