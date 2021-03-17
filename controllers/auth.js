@@ -178,6 +178,7 @@ exports.getNewPassword = (req, res, next) => {
         pageTitle: 'Set Password',
         errorMessage: message,
         userId: user._id.toString(),
+        passwordToken: token,
       });
     })
     .catch((err) => {
@@ -185,4 +186,26 @@ exports.getNewPassword = (req, res, next) => {
     });
 };
 
-exports.postNewPassword = (req, res, next) => {};
+exports.postNewPassword = (req, res, next) => {
+  const { password, userId, passwordToken } = req.body;
+  let updatedUser;
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId,
+  })
+    .then((user) => {
+      updatedUser = user;
+      return bcrypt.hash(password, 12);
+    })
+    .then((hashPassword) => {
+      updatedUser.password = hashPassword;
+      updatedUser.resetToken = undefined;
+      updatedUser.resetTokenExpiration = undefined;
+      return updatedUser.save();
+    })
+    .then((result) => {
+      res.redirect('/login');
+    })
+    .catch((err) => console.log(err));
+};
