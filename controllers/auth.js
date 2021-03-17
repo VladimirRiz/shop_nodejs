@@ -2,21 +2,17 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
+// const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 const User = require('../models/user');
 
-const S_key =
-  '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';
-
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      user: 'apikey', // <--- keep as is
-      pass: S_key, // <--- your api key
-    },
-  })
-);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
