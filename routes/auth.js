@@ -20,8 +20,8 @@ router.get('/reset/:token', controllerAuth.getNewPassword);
 router.post(
   '/login',
   [
-    body('email').isEmail(),
-    body('password', 'Wrong password').isLength({ min: 5 }),
+    body('email').isEmail().normalizeEmail(),
+    body('password', 'Wrong password').isLength({ min: 5 }).trim(),
   ],
   controllerAuth.postLogin
 );
@@ -33,26 +33,26 @@ router.post(
       .isEmail()
       .withMessage('Please enter a valid email')
       .custom((value, { req }) => {
-        // if (value === 'test@test.com') {
-        //   throw new Error('This email is forbidden');
-        // }
-        // return true;
         return User.findOne({ email: value }).then((userDoc) => {
           if (userDoc) {
             return Promise.reject('This email is already exist');
           }
         });
-      }),
-    body('password', 'Enter a password at least with 5 characters ').isLength({
-      min: 5,
-    }),
-    body('confirmPassword').custom((value, { req }) => {
-      console.log(value === req.body.password);
-      if (value !== req.body.password) {
-        throw new Error('Passwords have to much!');
-      }
-      return true;
-    }),
+      }).normalizeEmail,
+    body('password', 'Enter a password at least with 5 characters ')
+      .isLength({
+        min: 5,
+      })
+      .trim(),
+    body('confirmPassword')
+      .custom((value, { req }) => {
+        console.log(value === req.body.password);
+        if (value !== req.body.password) {
+          throw new Error('Passwords have to much!');
+        }
+        return true;
+      })
+      .trim(),
   ],
   controllerAuth.postSignUp
 );
