@@ -16,7 +16,11 @@ router.get('/reset/:token', controllerAuth.getNewPassword);
 
 router.post('/login', controllerAuth.postLogin);
 
-router.post('/signup', check('email').isEmail(), controllerAuth.postSignUp);
+router.post(
+  '/signup',
+  check('email').isEmail().withMessage('Please enter a valid email'),
+  controllerAuth.postSignUp
+);
 
 router.post('/logout', controllerAuth.postLogout);
 
