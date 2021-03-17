@@ -4,30 +4,32 @@ const express = require('express');
 const csrf = require('csurf');
 const csrfProtection = csrf();
 
-const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 
-const routerData = require('./routes/admin');
-const routerShop = require('./routes/shop');
-const routerAuth = require('./routes/auth');
+const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
+const routerData = require('./routes/admin');
+const routerShop = require('./routes/shop');
+const routerAuth = require('./routes/auth');
+
 const User = require('./models/user');
 
 const controllerError = require('./controllers/error');
 
-const app = express();
-
 const MONGODB_URI =
-  'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop?retryWrites=true&w=majority';
+  'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop';
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'session',
 });
+
+const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -63,6 +65,7 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
 });
+app.use(flash());
 
 app.use('/admin', routerData);
 app.use(routerShop);
