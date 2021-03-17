@@ -3,6 +3,7 @@ const express = require('express');
 const { check, body } = require('express-validator');
 
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 const controllerAuth = require('../controllers/auth');
 
@@ -16,7 +17,14 @@ router.get('/reset', controllerAuth.getReset);
 
 router.get('/reset/:token', controllerAuth.getNewPassword);
 
-router.post('/login', controllerAuth.postLogin);
+router.post(
+  '/login',
+  [
+    body('email').isEmail(),
+    body('password', 'Wrong password').isLength({ min: 5 }),
+  ],
+  controllerAuth.postLogin
+);
 
 router.post(
   '/signup',

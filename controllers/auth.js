@@ -19,15 +19,15 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.getLogin = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else message = null;
-  console.log(message);
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    errorMessage: message,
+    errorMessage: null,
+    oldInputs: {
+      email: '',
+      password: '',
+    },
+    validationErrors: [],
   });
 };
 
@@ -35,18 +35,30 @@ exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     return res.status(422).render('auth/login', {
       pageTitle: 'Login',
       path: '/login',
       errorMessage: errors.array()[0].msg,
+      oldInputs: {
+        email: email,
+        password: password,
+      },
+      validationErrors: errors.array(),
     });
   }
   User.findOne({ email })
     .then((user) => {
       if (!user) {
-        req.flash('error', 'Invalid email or password');
-        return res.redirect('/login');
+        return res.status(422).render('auth/login', {
+          pageTitle: 'Login',
+          path: '/login',
+          errorMessage: `Email doesn't exist, please sigh up!`,
+          oldInputs: {
+            email: email,
+            password: password,
+          },
+          validationErrors: errors.array(),
+        });
       }
       return bcrypt
         .compare(password, user.password)
@@ -58,7 +70,16 @@ exports.postLogin = (req, res, next) => {
               res.redirect('/');
             });
           }
-          res.redirect('login');
+          return res.status(422).render('auth/login', {
+            pageTitle: 'Login',
+            path: '/login',
+            errorMessage: 'Wrong password',
+            oldInputs: {
+              email: email,
+              password: password,
+            },
+            validationErrors: [{ param: 'password' }],
+          });
         })
         .catch((err) => console.log(err));
     })
@@ -72,14 +93,10 @@ exports.postLogout = (req, res, next) => {
 };
 
 exports.getSignUp = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else message = null;
   res.render('auth/signup', {
     pageTitle: 'Sign Up',
     path: '/signup',
-    errorMessage: message,
+    errorMessage: null,
     oldInputs: {
       email: '',
       password: '',
