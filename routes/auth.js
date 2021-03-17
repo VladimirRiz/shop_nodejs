@@ -10,6 +10,8 @@ router.get('/signup', controllerAuth.getSignUp);
 
 router.get('/reset', controllerAuth.getReset);
 
+router.get('/reset/:token', controllerAuth.getNewPassword);
+
 router.post('/login', controllerAuth.postLogin);
 
 router.post('/signup', controllerAuth.postSignUp);
@@ -17,5 +19,7 @@ router.post('/signup', controllerAuth.postSignUp);
 router.post('/logout', controllerAuth.postLogout);
 
 router.post('/reset', controllerAuth.postReset);
+
+router.post('/reset/:token', controllerAuth.postNewPassword);
 
 module.exports = router;
