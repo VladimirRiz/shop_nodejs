@@ -22,7 +22,7 @@ router.post(
     check('email')
       .isEmail()
       .withMessage('Please enter a valid email')
-      .custom((value, req) => {
+      .custom((value, { req }) => {
         if (value === 'test@test.com') {
           throw new Error('This email is forbidden');
         }
@@ -30,6 +30,11 @@ router.post(
       }),
     body('password', 'Enter a password at least with 5 characters ').isLength({
       min: 5,
+    }),
+    body('confirmPassword').custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Passwords have to much!');
+      }
     }),
   ],
   controllerAuth.postSignUp
