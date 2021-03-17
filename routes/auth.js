@@ -39,9 +39,11 @@ router.post(
       min: 5,
     }),
     body('confirmPassword').custom((value, { req }) => {
+      console.log(value === req.body.password);
       if (value !== req.body.password) {
         throw new Error('Passwords have to much!');
       }
+      return true;
     }),
   ],
   controllerAuth.postSignUp
