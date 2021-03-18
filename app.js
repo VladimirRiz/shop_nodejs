@@ -53,10 +53,15 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then((user) => {
+      if (!user) {
+        return next();
+      }
       req.user = user;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 });
 
 app.use(csrfProtection);
@@ -70,6 +75,8 @@ app.use(flash());
 app.use('/admin', routerData);
 app.use(routerShop);
 app.use(routerAuth);
+
+app.get('/500', controllerError.get500);
 
 app.use(controllerError.get404);
 

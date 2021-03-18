@@ -88,8 +88,8 @@ exports.postEditProduct = (req, res, next) => {
   if (!errors.isEmpty()) {
     console.log(errors);
     return res.status(422).render('admin/edit-product', {
-      pageTitle: 'Add Product',
-      path: '/add-product',
+      pageTitle: 'Edit Product',
+      path: '/edit-product',
       editing: true,
       errorMessage: errors.array()[0].msg,
       product: {
