@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 
+const { check, body } = require('express-validator');
+
 const controllerAdmin = require('../controllers/admin');
 const isAuth = require('../middleware/is-auth');
 
@@ -8,13 +10,33 @@ const router = express.Router();
 
 router.get('/add-product', isAuth, controllerAdmin.getAddProduct);
 
-router.post('/add-product', isAuth, controllerAdmin.postAddProduct);
+router.post(
+  '/add-product',
+  isAuth,
+  [
+    body('title').isString().isLength({ min: 5 }).trim(),
+    body('imageUrl', 'Uri has to be the link').isURL(),
+    body('price').isFloat(),
+    body('description').isLength({ min: 5, max: 200 }).trim(),
+  ],
+  controllerAdmin.postAddProduct
+);
 
 router.get('/products', isAuth, controllerAdmin.getProducts);
 
 router.get('/edit-product/:productId', isAuth, controllerAdmin.getEditProduct);
 
-router.post('/edit-product', isAuth, controllerAdmin.postEditProduct);
+router.post(
+  '/edit-product',
+  [
+    body('title').isString().isLength({ min: 5 }).trim(),
+    body('imageUrl', 'Url has to be the link').isURL(),
+    body('price').isFloat(),
+    body('description').isLength({ min: 5, max: 200 }).trim(),
+  ],
+  isAuth,
+  controllerAdmin.postEditProduct
+);
 
 router.post('/delete', isAuth, controllerAdmin.postDeleteProduct);
 
