@@ -35,7 +35,9 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const { title, imageUrl, price, description } = req.body;
+  const { title, price, description } = req.body;
+  const image = req.file;
+  console.log(image);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
@@ -47,7 +49,7 @@ exports.postAddProduct = (req, res, next) => {
       oldInputs: {
         title: title,
         description: description,
-        imageUrl: imageUrl,
+        imageUrl: image,
         price: price,
       },
       validationErrors: errors.array(),
@@ -56,7 +58,7 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product({
     title: title,
     description: description,
-    imageUrl: imageUrl,
+    imageUrl: image,
     price: price,
     userId: req.user,
   });

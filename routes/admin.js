@@ -15,7 +15,6 @@ router.post(
   isAuth,
   [
     body('title').isString().isLength({ min: 5 }).trim(),
-    body('imageUrl', 'Uri has to be the link').isURL(),
     body('price').isFloat(),
     body('description').isLength({ min: 5, max: 200 }).trim(),
   ],
@@ -30,7 +29,6 @@ router.post(
   '/edit-product',
   [
     body('title').isString().isLength({ min: 5 }).trim(),
-    body('imageUrl', 'Url has to be the link').isURL(),
     body('price').isFloat(),
     body('description').isLength({ min: 5, max: 200 }).trim(),
   ],
