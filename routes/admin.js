@@ -14,7 +14,7 @@ router.post(
   '/add-product',
   isAuth,
   [
-    body('title').isString().isLength({ min: 5 }).trim(),
+    body('title').isString().isLength({ min: 4 }).trim(),
     body('price').isFloat(),
     body('description').isLength({ min: 5, max: 200 }).trim(),
   ],
@@ -28,7 +28,7 @@ router.get('/edit-product/:productId', isAuth, controllerAdmin.getEditProduct);
 router.post(
   '/edit-product',
   [
-    body('title').isString().isLength({ min: 5 }).trim(),
+    body('title').isString().isLength({ min: 4 }).trim(),
     body('price').isFloat(),
     body('description').isLength({ min: 5, max: 200 }).trim(),
   ],

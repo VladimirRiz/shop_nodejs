@@ -37,6 +37,20 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const { title, price, description } = req.body;
   const image = req.file;
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/add-product',
+      editing: false,
+      errorMessage: 'Attached file is not an image',
+      oldInputs: {
+        title: title,
+        description: description,
+        price: price,
+      },
+      validationErrors: [],
+    });
+  }
   console.log(image);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -49,16 +63,16 @@ exports.postAddProduct = (req, res, next) => {
       oldInputs: {
         title: title,
         description: description,
-        imageUrl: image,
         price: price,
       },
       validationErrors: errors.array(),
     });
   }
+  const imageUrl = image.path;
   const product = new Product({
     title: title,
     description: description,
-    imageUrl: image,
+    imageUrl: imageUrl,
     price: price,
     userId: req.user,
   });
@@ -97,7 +111,8 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const { id, title, imageUrl, price, description } = req.body;
+  const { id, title, price, description } = req.body;
+  const image = req.file;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
@@ -109,7 +124,6 @@ exports.postEditProduct = (req, res, next) => {
       product: {
         title: title,
         description: description,
-        imageUrl: imageUrl,
         price: price,
         _id: id,
       },
@@ -122,9 +136,11 @@ exports.postEditProduct = (req, res, next) => {
         return res.redirect('/');
       }
       product.title = title;
-      product.imageUrl = imageUrl;
       product.price = price;
       product.description = description;
+      if (image) {
+        product.imageUrl = image.path;
+      }
       return product.save().then((result) => {
         res.redirect('/admin/products');
       });
