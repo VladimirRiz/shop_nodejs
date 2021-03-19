@@ -34,6 +34,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
   const errors = validationResult(req);
+  console.log(email, password);
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/login', {
       pageTitle: 'Login',
@@ -46,7 +47,7 @@ exports.postLogin = (req, res, next) => {
       validationErrors: errors.array(),
     });
   }
-  User.findOne({ email })
+  User.findOne({ email: email })
     .then((user) => {
       if (!user) {
         return res.status(422).render('auth/login', {
@@ -60,7 +61,7 @@ exports.postLogin = (req, res, next) => {
           validationErrors: errors.array(),
         });
       }
-      return bcrypt
+      bcrypt
         .compare(password, user.password)
         .then((doMatch) => {
           if (doMatch) {
@@ -81,7 +82,9 @@ exports.postLogin = (req, res, next) => {
             validationErrors: [{ param: 'password' }],
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          res.redirect('/login');
+        });
     })
     .catch((err) => {
       const error = new Error(err);
@@ -131,7 +134,7 @@ exports.postSignUp = (req, res, next) => {
     .hash(password, 12)
     .then((hashPassword) => {
       const user = new User({
-        email,
+        email: email,
         password: hashPassword,
         cart: { items: [] },
       });
@@ -139,27 +142,23 @@ exports.postSignUp = (req, res, next) => {
     })
     .then(() => {
       res.redirect('/login');
-      return transporter.sendMail(
-        {
-          to: email,
-          from: 'my-shop@gmail.com',
-          subject: 'You are Sign Up',
-          text: 'Hello world',
-          html: '<h1>Hooray, You are in!</h1>',
-        },
-        function (err, res) {
-          if (err) {
-            console.log(err);
-          }
-          console.log(res);
-        }
-      );
+      // return transporter.sendMail(
+      //   {
+      //     to: email,
+      //     from: 'my-shop@gmail.com',
+      //     subject: 'You are Sign Up',
+      //     text: 'Hello world',
+      //     html: '<h1>Hooray, You are in!</h1>',
+      //   },
+      //   function (err, res) {
+      //     if (err) {
+      //       console.log(err);
+      //     }
+      //     console.log(res);
+      //   }
+      // );
     })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    .catch((err) => {});
 };
 
 exports.getReset = (req, res, next) => {

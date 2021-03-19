@@ -38,7 +38,8 @@ router.post(
             return Promise.reject('This email is already exist');
           }
         });
-      }).normalizeEmail,
+      })
+      .normalizeEmail(),
     body('password', 'Enter a password at least with 5 characters ')
       .isLength({
         min: 5,

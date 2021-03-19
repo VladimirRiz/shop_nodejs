@@ -22,14 +22,15 @@ const User = require('./models/user');
 
 const controllerError = require('./controllers/error');
 
-const MONGODB_URI = `${process.env.MONGODB}`;
-
-console.log(MONGODB_URI);
+const MONGODB_URI =
+  'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop';
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'session',
 });
+
+User.find().then((result) => console.log(result));
 
 const app = express();
 
