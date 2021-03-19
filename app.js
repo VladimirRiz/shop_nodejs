@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 
@@ -21,8 +22,9 @@ const User = require('./models/user');
 
 const controllerError = require('./controllers/error');
 
-const MONGODB_URI =
-  'mongodb+srv://rizian:rizPass@cluster0.h28ps.mongodb.net/shop';
+const MONGODB_URI = `${process.env.MONGODB}`;
+
+console.log(MONGODB_URI);
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -60,7 +62,7 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => {
-      throw new Error(err);
+      next(new Error(err));
     });
 });
 
@@ -79,6 +81,10 @@ app.use(routerAuth);
 app.get('/500', controllerError.get500);
 
 app.use(controllerError.get404);
+
+app.use((error, req, res, next) => {
+  res.redirect('/500');
+});
 
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
