@@ -2,6 +2,8 @@
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
@@ -19,7 +21,7 @@ form {
   display: inline;
 }
 
-.centered {
+.center {
   text-align: center;
 }
 
@@ -29,6 +31,10 @@ form {
 
 .image img {
   height: 100%;
+}
+
+ul {
+  list-style: none;
 }
 
 .main-header {
@@ -243,6 +249,39 @@ form {
 
 .user-message--error {
   width: 20rem;
+}
+
+.grid__cart .cart {
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.cart__list {
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 0.5em;
+}
+
+.order__list {
+  margin: 1rem;
+}
+
+.order__list_item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #0aaa97;
+  border-radius: 0.5rem;
+}
+.order__list_id {
+  border-bottom: 1px solid #113b36;
+}
+
+.order__list_item > ul {
+  margin: 1rem 0 0;
 }
 
 @media (min-width: 768px) {

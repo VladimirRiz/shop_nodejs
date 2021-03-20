@@ -5,22 +5,22 @@
     <%- include('../includes/nav.ejs') %>
     <main class="main">
         <% if (products.length > 0) {%>
-            <div class="grid grid__cart">
-                <ul class="card  product-item">
+            <div class="grid__cart">
+                <ul class="cart  product-item">
             <% products.forEach(p => { %>
                     <li class="cart__list"> 
-                        <header class="card__header">
+                        <header class="cart__header">
                             <h1 class="product__title">
                             <%= p.productId.title %>
                             </h1>
                         </header>
                         
-                        <div class="card__content">
-                            <h2 class="product__price">
+                        <div class="cart__content">
+                            <h2 class="cart__quantity">
                                 (<%= p.quantity %>)
                             </h2>
                         </div>
-                        <div class="card__actions">
+                        <div class="cart__actions">
                         <form action="/cart-delete-item" method="POST">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
                             <input type="hidden" name="id" value="<%= p.productId._id%>">

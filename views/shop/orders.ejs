@@ -6,13 +6,13 @@
         <% if(orders.length <= 0) { %>
             Nothing yet!
         <% } else { %>
-            <ul>
-                <% orders.forEach(order => { %>
-                    <li>
-                        <h1># <%= order.user._id %></h1>
-                        <ul>
+            <ul class="order__list">
+                <% orders.forEach(order => {%>
+                    <li class="order__list_item">
+                        <h1 class="order__list_id"># <%= order._id %></h1>
+                        <ul >
                                 <% order.products.forEach(product => { %>
-                                    <li><%= product.title %> <%= product.quantity %></li>
+                                    <li ><%= product.title %> <%= product.quantity %> - <a href="/orders/<%= order._id %>"> Invoice</a></li> 
                                <% }) %>
                         </ul>
                     </li>
