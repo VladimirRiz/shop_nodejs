@@ -51,7 +51,6 @@ exports.getCart = (req, res, next) => {
     .populate('cart.items.productId')
     .execPopulate()
     .then((user) => {
-      console.log(user.cart.items);
       const products = user.cart.items;
       res.render('shop/cart', {
         pageTitle: 'Cart',
@@ -73,7 +72,6 @@ exports.postCart = (req, res, next) => {
       return req.user.addToCard(product);
     })
     .then((result) => {
-      console.log(result);
       res.redirect('/cart');
     })
     .catch((err) => console.log(err));
@@ -97,7 +95,6 @@ exports.postDeleteProduct = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
   Order.find({ 'user.userId': req.user._id })
     .then((orders) => {
-      console.log(orders);
       res.render('shop/orders', {
         pageTitle: 'Orders',
         path: '/orders',
@@ -149,6 +146,8 @@ exports.getInvoice = (req, res, next) => {
     if (err) {
       return next(err);
     }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
     res.send(data);
   });
 };
