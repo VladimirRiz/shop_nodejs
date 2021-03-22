@@ -2,20 +2,27 @@ const { findById } = require('../models/product');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
+const ITEMS_PER_PAGE = 2;
+
 const PDFDocument = require('pdfkit');
 
 const fs = require('fs');
 const path = require('path');
 
 exports.getIndex = (req, res, next) => {
-  Product.find().then((products) => {
-    res.render('shop/index', {
-      pageTitle: 'Shop',
-      path: '/',
-      prods: products,
-      isAuth: req.session.isLogin,
+  const page = req.query.page;
+  console.log((page - 1) * ITEMS_PER_PAGE);
+  Product.find()
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
+    .then((products) => {
+      res.render('shop/index', {
+        pageTitle: 'Shop',
+        path: '/',
+        prods: products,
+        isAuth: req.session.isLogin,
+      });
     });
-  });
 };
 
 exports.getProducts = (req, res, next) => {
