@@ -301,7 +301,8 @@ ul {
 }
 
 .pagination a:hover,
-.pagination a:active {
+.pagination a:active,
+.pagination a.active {
   background-color: #0a4b25;
   color: white;
 }

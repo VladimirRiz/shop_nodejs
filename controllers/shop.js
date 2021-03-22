@@ -2,7 +2,7 @@ const { findById } = require('../models/product');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 1;
 
 const PDFDocument = require('pdfkit');
 
@@ -10,17 +10,31 @@ const fs = require('fs');
 const path = require('path');
 
 exports.getIndex = (req, res, next) => {
-  const page = req.query.page;
-  console.log((page - 1) * ITEMS_PER_PAGE);
+  const page = +req.query.page || 1;
+  let totalItems;
+
   Product.find()
-    .skip((page - 1) * ITEMS_PER_PAGE)
-    .limit(ITEMS_PER_PAGE)
+    .countDocuments()
+    .then((numProducts) => {
+      totalItems = numProducts;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then((products) => {
+      console.log(products);
       res.render('shop/index', {
         pageTitle: 'Shop',
         path: '/',
         prods: products,
         isAuth: req.session.isLogin,
+        currentPage: page,
+        totalProducts: totalItems,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       });
     });
 };
